@@ -17,15 +17,16 @@ modalBg.addEventListener('click', e => {
     modal.style.display = 'none';
 })
 
-// Input
+// Display what's already in library on screen
+const table = document.querySelector('table');
+let library = !localStorage['library'] ? [] : JSON.parse(localStorage.getItem('library'));
+displayBooks();
 
 // Enter book info
 const titleInput = document.getElementById('title');
 const authorInput = document.getElementById('author');
 const pagesInput = document.getElementById('pages');
 const readInput = document.getElementById('read');
-const table = document.querySelector('table');
-
 
 // Press 'add'
 document.querySelector("form").addEventListener("submit", (e) => {
@@ -35,7 +36,7 @@ document.querySelector("form").addEventListener("submit", (e) => {
 });
 
 function Book(title, author, pages, haveRead) {
-	this.id = Date.now();
+	this.id = randomID();
 	this.title = title;
 	this.author = author;
 	this.pages = pages;
@@ -47,12 +48,14 @@ function Book(title, author, pages, haveRead) {
 	};
 }
 
+const randomID = () => Math.floor(Math.random() * Date.now());
+
 // new Book object is created and added to library
-let library = [];
 
 const createBook = () => new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
 const addBook = () => {
 	library.push(createBook());
+	localStorage.setItem('library', JSON.stringify(library));
 	console.log(library);
 	clearInputs();
 }
@@ -60,10 +63,16 @@ const addBook = () => {
 function clearInputs() {
 	const inputs = form.querySelectorAll('input');
 	inputs.forEach(input => input.value = null);
+	inputs.forEach(input => input.checked == true ? input.checked = false: null);
 }
 // book is added on-screen
 function displayBooks() {
 	library.forEach(book => {
+		// Check if book is already on page
+		//if (Array.from(table.rows).some(row => row.dataset.id == book.id)) return;
+		
+		const tableInner = document.getElementById('table-inner');
+		tableInner.innerHTML = '';
 		const newBook = document.createElement('tr');
 		const newBookTitle = document.createElement('td');
 		newBookTitle.textContent = book.title;
@@ -73,12 +82,23 @@ function displayBooks() {
 		newBookPages.textContent = book.pages;
 		const newBookRead = document.createElement('td');
 		newBookRead.textContent = book.haveRead ? 'Yes' : 'No';
+		const toggleRead = document.createElement('input');
+		toggleRead.type = 'checkbox';
+		toggleRead.classList.add('toggle-read');
+		newBookRead.appendChild(toggleRead);
+		const deleteBook = document.createElement('td');
+		const deleteBookButton = document.createElement('button');
+		deleteBookButton.classList.add('delete-book-button');
+		deleteBookButton.innerHTML = `&#215;`;
+		deleteBook.appendChild(deleteBookButton);
 
 		newBook.appendChild(newBookTitle);
 		newBook.appendChild(newBookAuthor);
 		newBook.appendChild(newBookPages);
 		newBook.appendChild(newBookRead);
+		newBook.appendChild(deleteBook);
+		newBook.dataset.id = book.id;
 
-		table.appendChild(newBook);
+		tableInner.appendChild(newBook);
 	})
 }
