@@ -30,10 +30,12 @@ const table = document.querySelector('table');
 // Press 'add'
 document.querySelector("form").addEventListener("submit", (e) => {
 	e.preventDefault();
-	console.log("new book!");
+	addBook();
+	displayBooks();
 });
 
 function Book(title, author, pages, haveRead) {
+	this.id = Date.now();
 	this.title = title;
 	this.author = author;
 	this.pages = pages;
@@ -48,9 +50,12 @@ function Book(title, author, pages, haveRead) {
 // new Book object is created and added to library
 let library = [];
 
-const createBook = () => new Book(titleInput.value, authorInput.value, pagesInput.value, haveRead.value);
-const addBook = () => library.push(createBook());
-
+const createBook = () => new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
+const addBook = () => {
+	library.push(createBook());
+	console.log(library);
+	clearInputs();
+}
 // inputs are cleared
 function clearInputs() {
 	const inputs = form.querySelectorAll('input');
@@ -58,5 +63,22 @@ function clearInputs() {
 }
 // book is added on-screen
 function displayBooks() {
-	
+	library.forEach(book => {
+		const newBook = document.createElement('tr');
+		const newBookTitle = document.createElement('td');
+		newBookTitle.textContent = book.title;
+		const newBookAuthor = document.createElement('td');
+		newBookAuthor.textContent = book.author;
+		const newBookPages = document.createElement('td');
+		newBookPages.textContent = book.pages;
+		const newBookRead = document.createElement('td');
+		newBookRead.textContent = book.haveRead ? 'Yes' : 'No';
+
+		newBook.appendChild(newBookTitle);
+		newBook.appendChild(newBookAuthor);
+		newBook.appendChild(newBookPages);
+		newBook.appendChild(newBookRead);
+
+		table.appendChild(newBook);
+	})
 }
