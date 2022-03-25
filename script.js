@@ -86,6 +86,11 @@ function displayBooks() {
 		toggleRead.type = 'checkbox';
 		toggleRead.classList.add('toggle-read');
 		newBookRead.appendChild(toggleRead);
+		const editBook = document.createElement('td');
+		const editBookButton = document.createElement('button');
+		editBookButton.classList.add('edit-book-button');
+		editBookButton.innerHTML = `Edit`;
+		editBook.appendChild(editBookButton);
 		const deleteBook = document.createElement('td');
 		const deleteBookButton = document.createElement('button');
 		deleteBookButton.classList.add('delete-book-button');
@@ -96,6 +101,7 @@ function displayBooks() {
 		newBook.appendChild(newBookAuthor);
 		newBook.appendChild(newBookPages);
 		newBook.appendChild(newBookRead);
+		newBook.appendChild(editBook);
 		newBook.appendChild(deleteBook);
 		newBook.dataset.id = book.id;
 
