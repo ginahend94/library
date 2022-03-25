@@ -8,11 +8,14 @@ h1 {
 
 .wrapper {
     padding: 20px;
+    font-family: 'Roboto', sans-serif;
 }
 
 table {
 	border: solid 1px lightcoral;
     color: white;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 thead td {
@@ -79,21 +82,24 @@ form {
 	gap: 10px;
 	margin:20px;
 	background-color:white;
-	border:solid 1px pink;
 	padding:20px;
 	width:fit-content;
     box-shadow: 3px 3px 3px rgba(0,0,0, .3);
     align-items: center;
     z-index: 9999999999;
+    border-radius: 5px;
 }
 
 label {
-	background-color: pink;
+	background-color: rgba(240, 128, 128,.8);
 	padding: 5px;
+    color:white;
 }
 
 input {
-	border: solid 1px pink;
+	color:lightcoral;
+    font-size: 1.1rem;
+    border: solid 1px rgba(240, 128, 128,.8);
 }
 
 input[type="checkbox"] {
