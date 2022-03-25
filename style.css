@@ -13,6 +13,9 @@ table {
 thead td {
 	background-color: lightcoral;
 	font-weight: bold;
+    color:white;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
 }
 
 td {
