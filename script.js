@@ -12,7 +12,7 @@ modalBg.addEventListener('click', e => {
     modal.style.display = 'none';
 })
 
-
+// Input
 const titleInput = document.getElementById('title');
 const authorInput = document.getElementById('author');
 const pagesInput = document.getElementById('pages');
@@ -37,3 +37,4 @@ function Book(title, author, pages, haveRead) {
 		}`;
 	};
 }
+
