@@ -200,18 +200,18 @@ function deleteBook(bookId) {
         .querySelector(`[data-id='${bookId}']`)
         .querySelector('.title').textContent;
     confirmAction(`Are you sure you want to delete ${bookTitle}? This cannot be undone.`,
-    () => {
-        library = library.filter(object => {
-            console.log(bookId);
-            console.log(object.id);
-            console.log(object.id !== bookId);
-            object.id !== bookId;
-        });
-        updateLibrary();
-        hideAlert();
-        console.log(library);
-    },
-    true)
+        () => {
+            library = library.filter(object => {
+                console.log(bookId);
+                console.log(object.id);
+                console.log(object.id !== bookId);
+                object.id !== bookId;
+            });
+            updateLibrary();
+            hideAlert();
+            console.log(library);
+        },
+        true)
 }
 
 // Dummy Books
@@ -285,9 +285,9 @@ function fillLibrary(bookNumber = 5) {
     ]
     const starts = ['', 'The', 'A', 'My', 'Her'];
     for (let i = 0; i < bookNumber; i++) {
-        library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`, 
-            randomize(names), 
-            randomNum(), 
+        library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`,
+            randomize(names),
+            randomNum(),
             randomNum(2)));
         updateLibrary();
     }
