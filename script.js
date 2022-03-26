@@ -5,25 +5,23 @@ const modalBg = document.querySelector('.modal-bg');
 const form = document.querySelector('form');
 const formCancel = form.querySelector('a');
 const addBookButton = form.querySelector('button');
+
+const hideModal = () => modal.style.display = 'none';
+
 const newBookButton = document.querySelector('.new-book');
 const deleteLibraryButton = document.querySelector('.delete-library')
 
 newBookButton.addEventListener('click', () => modal.style.display = 'flex');
 deleteLibraryButton.addEventListener('click', deleteLibrary);
 
-
-addBookButton.addEventListener('click', () => {
-    console.log('ye')
-})
-
 formCancel.addEventListener('click', () => {
-    modal.style.display = 'none';
+    hideModal();
     clearInputs();
 });
 wrapper.querySelector('button').addEventListener('click', () => modal.style.display = 'flex');
 
 modalBg.addEventListener('click', e => {
-    modal.style.display = 'none';
+    hideModal();
 })
 
 // Display what's already in library on screen
@@ -110,18 +108,21 @@ function displayBooks() {
         const toggleRead = document.createElement('input');
         toggleRead.type = 'checkbox';
         toggleRead.classList.add('toggle-read');
+        toggleRead.checked = book.haveRead;
         newBookRead.appendChild(toggleRead);
         const editBook = document.createElement('td');
         editBook.classList.add('edit');
         const editBookButton = document.createElement('button');
         editBookButton.classList.add('edit-book-button');
         editBookButton.innerHTML = `Edit`;
+        editBookButton.dataset.id = book.id;
         editBook.appendChild(editBookButton);
         const deleteBook = document.createElement('td');
         deleteBook.classList.add('delete');
         const deleteBookButton = document.createElement('button');
         deleteBookButton.classList.add('delete-book-button');
         deleteBookButton.textContent = 'Delete';
+        deleteBookButton.dataset.id = book.id;
         deleteBook.appendChild(deleteBookButton);
 
         newBook.appendChild(newBookTitle);
@@ -160,6 +161,11 @@ function confirmAction(message, callback, showCancel) {
     showCancel ? cancelButton.style.display = 'inline-block' : cancelButton.style.display = 'none';
 }
 
+function updateLibrary() {
+    displayBooks();
+    localStorage.setItem('library', JSON.stringify(library));
+}
+
 // Delete library
 function deleteLibrary() {
     // Cancel if library is already empty
@@ -169,9 +175,8 @@ function deleteLibrary() {
     confirmAction('Are you sure you want to delete your entire library? This cannot be undone.',
         () => {
             library = [];
-            localStorage.removeItem('library');
+            updateLibrary();
             hideAlert();
-            displayBooks();
             confirmAction('Library deleted.', hideAlert, false);
         },
         true);
@@ -184,6 +189,106 @@ function deleteLibrary() {
 // On save, find row matching object id
 
 // Delete book
+
+const deleteBookButtonArray = Array.from(document.querySelectorAll('.delete-book-button'));
+deleteBookButtonArray.forEach(deleteButton => {
+    deleteButton.addEventListener('click', deleteBook.bind(deleteButton, deleteButton.dataset.id));
+})
+
 function deleteBook(bookId) {
-    console.log('will delete book with id ' + bookId);
+    const bookTitle = document.getElementById('table-inner')
+        .querySelector(`[data-id='${bookId}']`)
+        .querySelector('.title').textContent;
+    confirmAction(`Are you sure you want to delete ${bookTitle}? This cannot be undone.`,
+    () => {
+        library = library.filter(object => {
+            console.log(bookId);
+            console.log(object.id);
+            console.log(object.id !== bookId);
+            object.id !== bookId;
+        });
+        updateLibrary();
+        hideAlert();
+        console.log(library);
+    },
+    true)
+}
+
+// Dummy Books
+function fillLibrary(bookNumber = 5) {
+    const randomize = array => array[randomNum(array.length)];
+    const randomNum = (limit = 1000) => Math.floor(Math.random() * limit);
+    const words = [
+        'Poet',
+        'Employment',
+        'Dirt',
+        'Two',
+        'Student',
+        'Hearing',
+        'Situation',
+        'Opportunity',
+        'Agreement',
+        'Attitude',
+        'Appointment',
+        'Accident',
+        'Emphasis',
+        'Nature',
+        'Disk',
+        'Conclusion',
+        'Disease',
+        'Dad',
+        'Income',
+        'Cell',
+        'Health',
+        'Camera',
+        'Computer',
+        'Finding',
+        'Magazine',
+        'Wife',
+        'Pizza',
+        'Strategy',
+        'Investment',
+        'Wood',
+        'Diamond',
+        'Psychology',
+        'Editor',
+        'Union',
+        'Language',
+        'Priority',
+        'Cousin',
+        'Shirt',
+        'Communication',
+        'Foundation',
+    ];
+    const middles = ['of', 'and the', 'for', 'or'];
+    const names = [
+        'Minnie Mosley',
+        'Raihan Baird',
+        'Milly Andrade',
+        'Rocky Norman',
+        'Gabriel Joseph',
+        'Kiya Pike',
+        'Zidane Hooper',
+        'Cayson Owen',
+        'Mohammed Whitworth',
+        'Morgan Marshall',
+        'Elara Sparrow',
+        'Hester Horner',
+        'Geoffrey Broadhurst',
+        'Kaitlin Nguyen',
+        'Tori Sierra',
+        'Shaunna Delaney',
+        'Neel Braun',
+        'Nikkita Howarth',
+        'Avery Gamble',
+        'Jennifer Compton',
+    ]
+    const starts = ['', 'The', 'A', 'My', 'Her'];
+    for (let i = 0; i < bookNumber; i++) {
+        library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`, 
+            randomize(names), 
+            randomNum(), 
+            randomNum(2)));
+        updateLibrary();
+    }
 }
