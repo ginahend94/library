@@ -14,7 +14,10 @@ addBookButton.addEventListener('click', () => {
 	console.log('ye')
 })
 
-formCancel.addEventListener('click', () => modal.style.display = 'none');
+formCancel.addEventListener('click', () => {
+    modal.style.display = 'none';
+    clearInputs();
+});
 wrapper.querySelector('button').addEventListener('click', () => modal.style.display = 'flex');
 
 modalBg.addEventListener('click', e => {
@@ -71,12 +74,14 @@ function clearInputs() {
 }
 // book is added on-screen
 function displayBooks() {
+		const tableInner = document.getElementById('table-inner');
+		tableInner.innerHTML = '';
 	library.forEach(book => {
 		// Check if book is already on page
 		//if (Array.from(table.rows).some(row => row.dataset.id == book.id)) return;
 		
-		const tableInner = document.getElementById('table-inner');
-		tableInner.innerHTML = '';
+        console.log('adding ' + book.title);
+
 		const newBook = document.createElement('tr');
 		const newBookTitle = document.createElement('td');
 		newBookTitle.textContent = book.title;
@@ -85,8 +90,11 @@ function displayBooks() {
 		const newBookPages = document.createElement('td');
 		newBookPages.textContent = book.pages;
 		const newBookRead = document.createElement('td');
-		newBookRead.textContent = book.haveRead ? 'Yes' : 'No';
-		const toggleRead = document.createElement('input');
+        const newBookReadSpan = document.createElement('span');
+        newBookReadSpan.classList.add('read-status');
+		newBookReadSpan.textContent = book.haveRead ? 'Yes' : 'No';
+		newBookRead.appendChild(newBookReadSpan);
+        const toggleRead = document.createElement('input');
 		toggleRead.type = 'checkbox';
 		toggleRead.classList.add('toggle-read');
 		newBookRead.appendChild(toggleRead);
