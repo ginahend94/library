@@ -4,9 +4,13 @@ const modal = document.querySelector('.modal');
 const modalBg = document.querySelector('.modal-bg');
 const form = document.querySelector('form');
 const formCancel = form.querySelector('a');
-const newBookButton = form.querySelector('button');
+const addBookButton = form.querySelector('button');
+const newBookButton = document.querySelector('.new-book');
+const deleteLibraryButton = document.querySelector('.delete-library')
 
-newBookButton.addEventListener('click', () => {
+newBookButton.addEventListener('click', () => modal.style.display = 'flex');
+
+addBookButton.addEventListener('click', () => {
 	console.log('ye')
 })
 
