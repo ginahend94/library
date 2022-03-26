@@ -21,6 +21,11 @@ table {
     padding: 5px;
 }
 
+.no-books {
+    font-style: italic;
+    text-align: center;
+}
+
 thead td {
 	background-color: lightcoral;
 	font-weight: bold;
@@ -143,4 +148,53 @@ form a:hover {
 }
 form a:active {
     opacity: 1;
+}
+
+.alert {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.alert-bg {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top:0;
+    left:0;
+    background-color: rgba(0,0,0,.3);
+}
+.alert-container {
+    position: relative;
+    border:solid 1px lightcoral;
+	margin:20px;
+	background-color:white;
+	padding:20px;
+	/* width:clamp(200px, 500px, 800px); */
+    height: fit-content;
+    box-shadow: 3px 3px 3px rgba(0,0,0, .3);
+    align-items: center;
+    z-index: 9999999999;
+    border-radius: 5px;
+    border-top: solid 44px lightcoral;
+    text-align: center;
+}
+.alert-container::before {
+    content: '!';
+    position: absolute;
+    top:-38px;
+    right:4px;
+    font-weight: 900;
+    font-size: 1.5rem;
+    display: block;
+    width: 2ch;
+    height: 2ch;
+    border: solid 3px white;
+    border-radius: 50%;
+    text-align: center;
+    color: white;
 }
