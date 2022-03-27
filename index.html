@@ -26,28 +26,13 @@
                     <td>Delete</td>
                 </thead>
                 <tbody id="table-inner">
-                    <tr data-id="7">
-                        <td>The Hobbit</td>
-                        <td>J.R.R. Tolkien</td>
-                        <td>297</td>
-                        <td><span class="read-status">No</span> <input type="checkbox"></td>
-                        <td><button>Edit</button></td>
-                        <td><button>Delete</button></td>
-                    </tr>
-                    <tr data-id="98">
-                        <td>Baby and Me</td>
-                        <td>M.T. Johnson</td>
-                        <td>32</td>
-                        <td><span class="read-status">Yes</span> <input type="checkbox"></td>
-                        <td><button>Edit</button></td>
-                        <td><button>Delete</button></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
         <div class="container">
             <button class="new-book">New Book</button>
             <button class="delete-library">Delete Library</button>
+            <button class="dummy-books" onclick="fillLibrary()">Fill Library with Dummy Books</button>
         </div>
     </div>
     <div class="modal">
@@ -64,6 +49,18 @@
             <button>Add new book</button>
             <a href="javascript:void(0);">Cancel</a>
         </form>
+    </div>
+    <div class="alert">
+        <div class="alert-bg"></div>
+        <div class="alert-container">
+            <p id="alert-text">
+                Are you sure?
+            </p>
+            <div class="confirm-buttons">
+                <button class="confirm">OK</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
