@@ -20,6 +20,7 @@ const deleteLibraryButton = document.querySelector('.delete-library')
 
 newBookButton.addEventListener('click', showModal.bind(newBookButton, modal));
 deleteLibraryButton.addEventListener('click', deleteLibrary);
+
 // Dummy Books
 function fillLibrary(bookNumber = 5) {
     const randomize = array => array[randomNum(array.length)];
@@ -66,7 +67,7 @@ function fillLibrary(bookNumber = 5) {
         'Communication',
         'Foundation',
     ];
-    const middles = ['of', 'and the', 'for', 'or'];
+    const middles = ['of', 'and the', 'for', 'or', 'of the',];
     const names = [
         'Minnie Mosley',
         'Raihan Baird',
@@ -89,7 +90,7 @@ function fillLibrary(bookNumber = 5) {
         'Avery Gamble',
         'Jennifer Compton',
     ]
-    const starts = ['', 'The', 'A', 'My', 'Her'];
+    const starts = ['', 'The', 'A', 'My', 'Her',];
     for (let i = 0; i < bookNumber; i++) {
         library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`,
             randomize(names),
@@ -137,6 +138,7 @@ const randomID = () => Math.floor(Math.random() * Date.now());
 const createBook = () => {
     const newBook = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
     newBook.prototype = Object.create(Book.prototype);
+    console.log(newBook);
     return newBook;
 }
 const addBookToLibrary = () => {
@@ -316,8 +318,8 @@ function changeBook(bookId, change) {
     // Update read status to check status
         this.checked = !this.checked;
         book.haveRead = !!this.checked; // haveRead might be boolean or 0/1
-        console.log(book.info());
-    // Update library
+        console.log(book.haveRead);
+        // Update library
         updateLibrary();
     }
 
