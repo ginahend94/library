@@ -170,27 +170,36 @@ function displayBooks() {
 
     library.forEach(book => {
         const newBook = document.createElement('tr');
+        // Title
         const newBookTitle = document.createElement('td');
         newBookTitle.textContent = book.title;
         newBookTitle.classList.add('title');
+
+        // Author
         const newBookAuthor = document.createElement('td');
         newBookAuthor.textContent = book.author;
         newBookAuthor.classList.add('author');
+
+        // Pages
         const newBookPages = document.createElement('td');
         newBookPages.textContent = book.pages;
         newBookPages.classList.add('pages');
+
+        // Read status
         const newBookRead = document.createElement('td');
         newBookRead.classList.add('read');
-        const newBookReadSpan = document.createElement('span');
-        newBookReadSpan.classList.add('read-status');
-        newBookReadSpan.textContent = !!book.haveRead ? 'Yes' : 'No'; // TEST
-        newBookRead.appendChild(newBookReadSpan);
+        const newBookReadLabel = document.createElement('label');
+        newBookReadLabel.classList.add('read-status');
+        newBookReadLabel.textContent = !!book.haveRead ? 'Yes' : 'No'; // TEST
+        newBookRead.appendChild(newBookReadLabel);
         const toggleRead = document.createElement('input');
         toggleRead.type = 'checkbox';
         toggleRead.classList.add('toggle-read');
         toggleRead.checked = book.haveRead;
         toggleRead.dataset.id = book.id;
-        newBookRead.appendChild(toggleRead);
+        newBookReadLabel.appendChild(toggleRead);
+
+        // Edit
         const editBook = document.createElement('td');
         editBook.classList.add('edit');
         const editBookButton = document.createElement('button');
@@ -198,6 +207,8 @@ function displayBooks() {
         editBookButton.innerHTML = `Edit`;
         editBookButton.dataset.id = book.id;
         editBook.appendChild(editBookButton);
+
+        // Delete
         const deleteBook = document.createElement('td');
         deleteBook.classList.add('delete');
         const deleteBookButton = document.createElement('button');
