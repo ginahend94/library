@@ -1,4 +1,4 @@
-// MODAL
+// Modal
 const modal = document.querySelector('.modal');
 const modalBg = document.querySelector('.modal-bg');
 const form = document.querySelector('form');
@@ -67,7 +67,13 @@ function fillLibrary(bookNumber = 5) {
         'Communication',
         'Foundation',
     ];
-    const middles = ['of', 'and the', 'for', 'or', 'of the',];
+    const middles = [
+        'of', 
+        'and the', 
+        'for', 
+        'or', 
+        'of the',
+    ];
     const names = [
         'Minnie Mosley',
         'Raihan Baird',
@@ -90,12 +96,18 @@ function fillLibrary(bookNumber = 5) {
         'Avery Gamble',
         'Jennifer Compton',
     ]
-    const starts = ['', 'The', 'A', 'My', 'Her',];
+    const starts = [
+        '', 
+        'The', 
+        'A', 
+        'My', 
+        'Her',
+    ];
     for (let i = 0; i < bookNumber; i++) {
-        library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`,
-            randomize(names),
-            randomNum(),
-            !!randomNum(2)));
+        library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`, // Generate random title
+            randomize(names), // Pick random author
+            randomNum(), // Random number of pages
+            !!randomNum(2))); // True/False read status
         updateLibrary();
     }
 }
@@ -105,7 +117,7 @@ const table = document.querySelector('table');
 let library = !localStorage['library'] ? [] : JSON.parse(localStorage.getItem('library'));
 updateLibrary();
 
-// Enter book info
+// Grab book info
 const titleInput = document.getElementById('title');
 const authorInput = document.getElementById('author');
 const pagesInput = document.getElementById('pages');
@@ -131,8 +143,7 @@ Book.prototype.info = function() {
 
 const randomID = () => Math.floor(Math.random() * Date.now());
 
-// new Book object is created and added to library
-
+// Create new Book object and add to library
 const createBook = () => {
     const newBook = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
     newBook.prototype = Object.create(Book.prototype);
@@ -155,6 +166,7 @@ function displayBooks() {
     const tableInner = document.getElementById('table-inner');
     tableInner.innerHTML = '';
 
+    // Display a message if there are no books in library
     if (!library.length) {
         const emptyMessageRow = document.createElement('tr');
         const emptyMessageCell = document.createElement('td');
@@ -165,26 +177,33 @@ function displayBooks() {
         tableInner.appendChild(emptyMessageRow);
     }
 
+    // Create and append a row for each book
     library.forEach(book => {
         const newBook = document.createElement('tr');
+        tableInner.appendChild(newBook);
+        newBook.dataset.id = book.id;
+
         // Title
         const newBookTitle = document.createElement('td');
+        newBook.appendChild(newBookTitle);
         newBookTitle.textContent = book.title;
         newBookTitle.classList.add('title');
-
+        
         // Author
         const newBookAuthor = document.createElement('td');
+        newBook.appendChild(newBookAuthor);
         newBookAuthor.textContent = book.author;
         newBookAuthor.classList.add('author');
 
         // Pages
         const newBookPages = document.createElement('td');
+        newBook.appendChild(newBookPages);
         newBookPages.textContent = book.pages;
         newBookPages.classList.add('pages');
         
         // Read status
         const newBookRead = document.createElement('td');
-        tableInner.appendChild(newBook);
+        newBook.appendChild(newBookRead);
         newBookRead.classList.add('read');
 
         const newBookReadLabel = document.createElement('label');
@@ -212,34 +231,28 @@ function displayBooks() {
         newBookReadLabel.appendChild(no);
         no.classList.add('no');
         no.textContent = 'No';
-        //newBookReadLabel.textContent = !!book.haveRead ? 'Yes' : 'No'; // TEST
 
         // Edit
         const editBook = document.createElement('td');
+        newBook.appendChild(editBook);
         editBook.classList.add('edit');
+
         const editBookButton = document.createElement('button');
+        editBook.appendChild(editBookButton);
         editBookButton.classList.add('edit-book-button');
         editBookButton.innerHTML = `Edit`;
         editBookButton.dataset.id = book.id;
-        editBook.appendChild(editBookButton);
 
         // Delete
         const deleteBook = document.createElement('td');
+        newBook.appendChild(deleteBook);
         deleteBook.classList.add('delete');
+
         const deleteBookButton = document.createElement('button');
+        deleteBook.appendChild(deleteBookButton);
         deleteBookButton.classList.add('delete-book-button');
         deleteBookButton.textContent = 'Delete';
         deleteBookButton.dataset.id = book.id;
-        deleteBook.appendChild(deleteBookButton);
-
-        newBook.appendChild(newBookTitle);
-        newBook.appendChild(newBookAuthor);
-        newBook.appendChild(newBookPages);
-        newBook.appendChild(newBookRead);
-        newBook.appendChild(editBook);
-        newBook.appendChild(deleteBook);
-        newBook.dataset.id = book.id;
-
     })
 }
 
@@ -252,13 +265,9 @@ const cancelButton = document.querySelector('.cancel');
 
 const hideAlert = () => alert.style.display = 'none';
 
-alertBG.addEventListener('click', () => {
-    hideAlert();
-})
+alertBG.addEventListener('click', hideAlert)
 
-cancelButton.addEventListener('click', () => {
-    hideAlert();
-})
+cancelButton.addEventListener('click', hideAlert);
 
 function confirmAction(message, callback, showCancel) {
     showModal(alert);
