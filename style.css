@@ -49,10 +49,40 @@ tr:nth-child(even) {
     background-color: rgba(var(--light-coral-rgb),.8);
 }
 
+.read-status {
+    display: flex;
+    border-radius: 5px;
+    position: relative;
+    gap:5px;
+}
+
 .toggle-read {
     width:0;
     height:0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    top:0;
+    left:0;
+    transition: 1s;
 }
+.yes, .no {
+    transition: .3s;
+    cursor: pointer;
+}
+.yes {
+    opacity: .5;
+}
+no {
+    opacity:1;
+}
+.toggle-read:checked ~ .no {
+    opacity:.5;
+}
+.toggle-read:checked ~ .yes {
+    opacity: 1;
+}
+
 
 button {
     border:solid 1px rgb(var(--light-coral-rgb));

@@ -95,7 +95,7 @@ function fillLibrary(bookNumber = 5) {
         library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`,
             randomize(names),
             randomNum(),
-            randomNum(2)));
+            !!randomNum(2)));
         updateLibrary();
     }
 }
@@ -128,8 +128,6 @@ Book.prototype.info = function() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.haveRead ? "read" : "not read yet"
         }`;
 };
-console.log(Book.prototype);
-console.log(Object.create(Book.prototype));
 
 const randomID = () => Math.floor(Math.random() * Date.now());
 
@@ -138,7 +136,6 @@ const randomID = () => Math.floor(Math.random() * Date.now());
 const createBook = () => {
     const newBook = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
     newBook.prototype = Object.create(Book.prototype);
-    console.log(newBook);
     return newBook;
 }
 const addBookToLibrary = () => {
@@ -184,20 +181,38 @@ function displayBooks() {
         const newBookPages = document.createElement('td');
         newBookPages.textContent = book.pages;
         newBookPages.classList.add('pages');
-
+        
         // Read status
         const newBookRead = document.createElement('td');
+        tableInner.appendChild(newBook);
         newBookRead.classList.add('read');
+
         const newBookReadLabel = document.createElement('label');
-        newBookReadLabel.classList.add('read-status');
-        newBookReadLabel.textContent = !!book.haveRead ? 'Yes' : 'No'; // TEST
         newBookRead.appendChild(newBookReadLabel);
+        newBookReadLabel.classList.add('read-status');
+
         const toggleRead = document.createElement('input');
+        newBookReadLabel.appendChild(toggleRead);
         toggleRead.type = 'checkbox';
         toggleRead.classList.add('toggle-read');
-        toggleRead.checked = book.haveRead;
+        toggleRead.checked = !!book.haveRead;
         toggleRead.dataset.id = book.id;
-        newBookReadLabel.appendChild(toggleRead);
+
+        const yes = document.createElement('span');
+        newBookReadLabel.appendChild(yes);
+        yes.classList.add('yes');
+        yes.textContent = 'Yes';
+
+        const checkmark = document.createElement('span');
+        newBookReadLabel.appendChild(checkmark);
+        checkmark.classList.add('checkmark');
+        checkmark.textContent = !!book.haveRead ? '✓' : '✖';
+
+        const no = document.createElement('span');
+        newBookReadLabel.appendChild(no);
+        no.classList.add('no');
+        no.textContent = 'No';
+        //newBookReadLabel.textContent = !!book.haveRead ? 'Yes' : 'No'; // TEST
 
         // Edit
         const editBook = document.createElement('td');
@@ -225,7 +240,6 @@ function displayBooks() {
         newBook.appendChild(deleteBook);
         newBook.dataset.id = book.id;
 
-        tableInner.appendChild(newBook);
     })
 }
 
@@ -263,17 +277,23 @@ function updateLibrary() {
 function addEventListeners() {
     const deleteBookButtons = document.querySelectorAll('.delete-book-button');
     deleteBookButtons.forEach(deleteButton => {
-        deleteButton.addEventListener('click', changeBook.bind(deleteButton, deleteButton.dataset.id, 'delete'));
+        deleteButton.addEventListener('click', e => {
+            changeBook(e, deleteButton.dataset.id, 'delete');
+        });
     })
     
     const readStatusToggles = document.querySelectorAll('.toggle-read');
     readStatusToggles.forEach(toggle => {
-        toggle.addEventListener('change', changeBook.bind(toggle, toggle.dataset.id, 'read'));
+        toggle.addEventListener('change', e => {
+            changeBook(e, toggle.dataset.id, 'read');
+        });
     })
     
     const editBookButtons = document.querySelectorAll('.edit-book-button');
     editBookButtons.forEach(button => {
-        button.addEventListener('click', changeBook.bind(button, button.dataset.id, 'edit'));
+        button.addEventListener('click', e => {
+            changeBook(e, button.dataset.id, 'edit');
+        });
     })
 }
 
@@ -295,7 +315,9 @@ function deleteLibrary() {
     
 
 // Change book
-function changeBook(bookId, change) {
+function changeBook(e, bookId, change) {
+    const target = e.target;
+    e.stopPropagation();
     const bookTitle = document.getElementById('table-inner')
         .querySelector(`[data-id='${bookId}']`)
         .querySelector('.title').textContent;
@@ -320,16 +342,13 @@ function changeBook(bookId, change) {
             },
             true)
     }
-
     
     // Toggle Read status
     function changeReadStatus(bookId) { 
-    // Find book in library
+        // Find book in library
         const book = library.find(a => a.id == bookId);
-    // Update read status to check status
-        this.checked = !this.checked;
-        book.haveRead = !!this.checked; // haveRead might be boolean or 0/1
-        console.log(book.haveRead);
+        // Update read status to check status
+        book.haveRead = !!target.checked; // haveRead might be boolean or 0/1\
         // Update library
         updateLibrary();
     }
@@ -349,8 +368,6 @@ function changeBook(bookId, change) {
             break;
     }
 } 
-
-console.log(library); // TEST
 
 // Edit library (select multiple to delete)
 // Duplicate book
