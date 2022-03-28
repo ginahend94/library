@@ -12,6 +12,7 @@ formCancel.addEventListener('click', () => {
     hideModal(modal);
     clearInputs();
 });
+modalBg.addEventListener('click', hideModal.bind(modalBg, modal));
 
 const newBookButton = document.querySelector('.new-book');
 const editLibraryButton = document.querySelector('.edit-library');
@@ -23,7 +24,6 @@ newBookButton.addEventListener('click', () => {
     let oldAddButton = addBookButton;
     addBookButton = addBookButton.cloneNode(true);
     oldAddButton.replaceWith(addBookButton);
-    modalBg.addEventListener('click', hideModal.bind(modalBg, modal));
     addBookButton.addEventListener('click', addBookToLibrary);
     addBookButton.textContent = 'Add new book';
     showModal(modal);
@@ -346,10 +346,27 @@ const editLibraryCancelButton = editLibraryModal.querySelector('.cancel');
 
 editLibraryBg.addEventListener('click', hideModal.bind(editLibraryBg, editLibraryModal));
 
+
 function editLibrary() {
+    editLibraryBookList.innerHTML = '';
     showModal(editLibraryModal);
-    // Add checkboxes before titles
+
+    const libraryTitles = () => {
+        const libraryTitlesContainer =  document.createElement('ul');
+        libraryTitlesContainer.classList.add('book-list-container');
+
+        library.forEach(book => {
+            // Add checkboxes before titles
+            libraryTitlesContainer.innerHTML += `<li><input class="to-delete" type="checkbox" value='${book.id}'> ${book.title} by ${book.author}</li>`;
+        })
+
+        return libraryTitlesContainer;
+    }
+
+    editLibraryBookList.appendChild(libraryTitles());
     // Add info ('select books to delete') and cancel and delete with number of books ('delete 4')
+
+
     // delete button is grayed out until at least one book is selected
     // Inputs correspond to books in library
     // box pops up: delete the following: lists books
@@ -432,3 +449,4 @@ function changeBook(e, bookId, change) {
 
 // Duplicate book
 // Dark mode
+// header, footer, sidebar
