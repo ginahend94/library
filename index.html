@@ -33,12 +33,12 @@
             <button class="new-book">New Book</button>
             <button class="edit-library">Edit Library</button>
             <button class="delete-library">Delete Library</button>
-            <button class="dummy-books" onclick="fillLibrary()" title="Fill library with dummy books">Fill Library</button>
+            <button class="dummy-books" title="Fill library with dummy books">Fill Library</button>
         </div>
     </div>
-    <div class="modal">
-        <div class="modal-bg"></div>
-        <form action="#">
+    <div class="modal modal-outer">
+        <div class="modal-bg bg"></div>
+        <form action="#" class="modal-container">
             <label for="title">Title</label>
             <input type="text" id="title" required>
             <label for="author">Author</label>
@@ -51,14 +51,27 @@
             <a href="javascript:void(0);">Cancel</a>
         </form>
     </div>
-    <div class="alert">
-        <div class="alert-bg"></div>
-        <div class="alert-container">
+    <div class="alert modal-outer">
+        <div class="alert-bg bg"></div>
+        <div class="alert-container modal-container">
             <p id="alert-text">
                 Are you sure?
             </p>
             <div class="confirm-buttons">
                 <button class="confirm">OK</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div class="edit-library-modal modal-outer">
+        <div class="edit-library-modal-bg bg"></div>
+        <div class="edit-library-container modal-container">
+            <p>Select the books you want to delete.</p>
+            <div class="book-list">
+                books will go here
+            </div>
+            <div class="edit-buttons-container">
+                <button class="delete-books">Delete Selected</button>
                 <button class="cancel">Cancel</button>
             </div>
         </div>

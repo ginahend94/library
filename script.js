@@ -14,7 +14,9 @@ formCancel.addEventListener('click', () => {
 });
 
 const newBookButton = document.querySelector('.new-book');
-const deleteLibraryButton = document.querySelector('.delete-library')
+const editLibraryButton = document.querySelector('.edit-library');
+const deleteLibraryButton = document.querySelector('.delete-library');
+const fillLibraryButton = document.querySelector('.dummy-books');
 
 newBookButton.addEventListener('click', () => {
     // Remove event listeners
@@ -27,98 +29,11 @@ newBookButton.addEventListener('click', () => {
     showModal(modal);
     clearInputs();
 });
+editLibraryButton.addEventListener('click', editLibrary);
 deleteLibraryButton.addEventListener('click', deleteLibrary);
+fillLibraryButton.addEventListener('click', fillLibrary.bind(fillLibraryButton, 5));
 
-// Dummy Books
-function fillLibrary(bookNumber = 5) {
-    const randomize = array => array[randomNum(array.length)];
-    const randomNum = (limit = 1000) => Math.floor(Math.random() * limit);
-    const words = [
-        'Poet',
-        'Employment',
-        'Dirt',
-        'Two',
-        'Student',
-        'Hearing',
-        'Situation',
-        'Opportunity',
-        'Agreement',
-        'Attitude',
-        'Appointment',
-        'Accident',
-        'Emphasis',
-        'Nature',
-        'Disk',
-        'Conclusion',
-        'Disease',
-        'Dad',
-        'Income',
-        'Cell',
-        'Health',
-        'Camera',
-        'Computer',
-        'Finding',
-        'Magazine',
-        'Wife',
-        'Pizza',
-        'Strategy',
-        'Investment',
-        'Wood',
-        'Diamond',
-        'Psychology',
-        'Editor',
-        'Union',
-        'Language',
-        'Priority',
-        'Cousin',
-        'Shirt',
-        'Communication',
-        'Foundation',
-    ];
-    const middles = [
-        'of',
-        'and the',
-        'for',
-        'or',
-        'of the',
-    ];
-    const names = [
-        'Minnie Mosley',
-        'Raihan Baird',
-        'Milly Andrade',
-        'Rocky Norman',
-        'Gabriel Joseph',
-        'Kiya Pike',
-        'Zidane Hooper',
-        'Cayson Owen',
-        'Mohammed Whitworth',
-        'Morgan Marshall',
-        'Elara Sparrow',
-        'Hester Horner',
-        'Geoffrey Broadhurst',
-        'Kaitlin Nguyen',
-        'Tori Sierra',
-        'Shaunna Delaney',
-        'Neel Braun',
-        'Nikkita Howarth',
-        'Avery Gamble',
-        'Jennifer Compton',
-    ]
-    const starts = [
-        '',
-        'The',
-        'A',
-        'My',
-        'Her',
-    ];
-    for (let i = 0; i < bookNumber; i++) {
-        library.push(new Book(`${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`, // Generate random title
-            randomize(names), // Pick random author
-            randomNum(), // Random number of pages
-            !!randomNum(2))); // True/False read status
-        updateLibrary();
-    }
-}
+
 
 // Display what's already in library on screen
 const table = document.querySelector('table');
@@ -168,11 +83,11 @@ function clearInputs() {
 }
 // book is added on-screen
 function displayBooks() {
-
+    
     // Clear table
     const tableInner = document.getElementById('table-inner');
     tableInner.innerHTML = '';
-
+    
     // Display a message if there are no books in library
     if (!library.length) {
         const emptyMessageRow = document.createElement('tr');
@@ -263,24 +178,117 @@ function displayBooks() {
     })
 }
 
+// Dummy Books
+function fillLibrary(bookNumber = 5) {
+    const randomize = array => array[randomNum(array.length)];
+    const randomNum = (limit = 1000) => Math.floor(Math.random() * limit);
+    const words = [
+        'Poet',
+        'Employment',
+        'Dirt',
+        'Two',
+        'Student',
+        'Hearing',
+        'Situation',
+        'Opportunity',
+        'Agreement',
+        'Attitude',
+        'Appointment',
+        'Accident',
+        'Emphasis',
+        'Nature',
+        'Disk',
+        'Conclusion',
+        'Disease',
+        'Dad',
+        'Income',
+        'Cell',
+        'Health',
+        'Camera',
+        'Computer',
+        'Finding',
+        'Magazine',
+        'Wife',
+        'Pizza',
+        'Strategy',
+        'Investment',
+        'Wood',
+        'Diamond',
+        'Psychology',
+        'Editor',
+        'Union',
+        'Language',
+        'Priority',
+        'Cousin',
+        'Shirt',
+        'Communication',
+        'Foundation',
+    ];
+    const middles = [
+        'of',
+        'and the',
+        'for',
+        'or',
+        'of the',
+    ];
+    const names = [
+        'Minnie Mosley',
+        'Raihan Baird',
+        'Milly Andrade',
+        'Rocky Norman',
+        'Gabriel Joseph',
+        'Kiya Pike',
+        'Zidane Hooper',
+        'Cayson Owen',
+        'Mohammed Whitworth',
+        'Morgan Marshall',
+        'Elara Sparrow',
+        'Hester Horner',
+        'Geoffrey Broadhurst',
+        'Kaitlin Nguyen',
+        'Tori Sierra',
+        'Shaunna Delaney',
+        'Neel Braun',
+        'Nikkita Howarth',
+        'Avery Gamble',
+        'Jennifer Compton',
+    ]
+    const starts = [
+        '',
+        'The',
+        'A',
+        'My',
+        'Her',
+    ];
+    for (let i = 0; i < bookNumber; i++) {
+        library.push(new Book(
+            `${randomize(starts)} ${randomize(words)} ${randomize(middles)} ${randomize(words)}`, // Generate random title
+            randomize(names), // Pick random author
+            randomNum(), // Random number of pages
+            !!randomNum(2)) // True/False read status
+        ); 
+        updateLibrary();
+    }
+}
+
 // Custom alert
 const alert = document.querySelector('.alert');
 const alertBG = document.querySelector('.alert-bg');
 const alertMessage = document.getElementById('alert-text');
-const okButton = document.querySelector('.confirm');
-const cancelButton = document.querySelector('.cancel');
+const alertOkButton = document.querySelector('.confirm');
+const alertCancelButton = alert.querySelector('.cancel');
 
-const hideAlert = () => alert.style.display = 'none';
+const hideAlert = () => hideModal(alert);
 
 alertBG.addEventListener('click', hideAlert)
 
-cancelButton.addEventListener('click', hideAlert);
+alertCancelButton.addEventListener('click', hideAlert);
 
 function confirmAction(message, callback, showCancel) {
     showModal(alert);
     alertMessage.textContent = message;
-    okButton.onclick = callback;
-    showCancel ? cancelButton.style.display = 'inline-block' : cancelButton.style.display = 'none';
+    alertOkButton.onclick = callback;
+    showCancel ? alertCancelButton.style.display = 'inline-block' : alertCancelButton.style.display = 'none';
 }
 
 function updateLibrary() {
@@ -328,7 +336,25 @@ function deleteLibrary() {
         },
         true);
 }
+    
+// Edit library (select multiple to delete)
+const editLibraryModal = document.querySelector('.edit-library-modal');
+const editLibraryBg = document.querySelector('.edit-library-modal-bg');
+const editLibraryBookList = document.querySelector('.book-list');
+const editLibraryDeleteButton = document.querySelector('.delete-books');
+const editLibraryCancelButton = editLibraryModal.querySelector('.cancel');
 
+editLibraryBg.addEventListener('click', hideModal.bind(editLibraryBg, editLibraryModal));
+
+function editLibrary() {
+    showModal(editLibraryModal);
+    // Add checkboxes before titles
+    // Add info ('select books to delete') and cancel and delete with number of books ('delete 4')
+    // delete button is grayed out until at least one book is selected
+    // Inputs correspond to books in library
+    // box pops up: delete the following: lists books
+    // 'yes' deletes books, cancel sends back
+}
 
 // Change book
 function changeBook(e, bookId, change) {
@@ -404,5 +430,5 @@ function changeBook(e, bookId, change) {
     }
 }
 
-// Edit library (select multiple to delete)
 // Duplicate book
+// Dark mode
