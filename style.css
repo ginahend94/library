@@ -218,3 +218,21 @@ form a:active {
     display: flex;
 }
 
+.book-list-container {
+    border:solid 1px rgb(var(--light-coral-rgb));
+    list-style: none;
+    padding: 5px;
+    color:white;
+}
+
+.book-list-container li {
+    padding: 10px;
+    margin:2px;
+}
+
+.book-list-container li:nth-child(odd) {
+    background-color:rgba(var(--light-coral-rgb),.6);
+}
+.book-list-container li:nth-child(even) {
+    background-color: rgba(var(--light-coral-rgb),.8);
+}
