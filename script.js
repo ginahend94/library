@@ -3,12 +3,10 @@ const modal = document.querySelector('.modal');
 const modalBg = document.querySelector('.modal-bg');
 const form = document.querySelector('form');
 const formCancel = form.querySelector('a');
-const addBookButton = form.querySelector('button');
+let addBookButton = form.querySelector('#add-book-button');
 
 const hideModal = modal => modal.style.display = 'none';
 const showModal = modal => modal.style.display = 'flex';
-
-modalBg.addEventListener('click', hideModal.bind(modalBg, modal));
 
 formCancel.addEventListener('click', () => {
     hideModal(modal);
@@ -18,7 +16,17 @@ formCancel.addEventListener('click', () => {
 const newBookButton = document.querySelector('.new-book');
 const deleteLibraryButton = document.querySelector('.delete-library')
 
-newBookButton.addEventListener('click', showModal.bind(newBookButton, modal));
+newBookButton.addEventListener('click', () => {
+    // Remove event listeners
+    let oldAddButton = addBookButton;
+    addBookButton = addBookButton.cloneNode(true);
+    oldAddButton.replaceWith(addBookButton);
+    modalBg.addEventListener('click', hideModal.bind(modalBg, modal));
+    addBookButton.addEventListener('click', addBookToLibrary);
+    addBookButton.textContent = 'Add new book';
+    showModal(modal);
+    clearInputs();
+});
 deleteLibraryButton.addEventListener('click', deleteLibrary);
 
 // Dummy Books
@@ -68,10 +76,10 @@ function fillLibrary(bookNumber = 5) {
         'Foundation',
     ];
     const middles = [
-        'of', 
-        'and the', 
-        'for', 
-        'or', 
+        'of',
+        'and the',
+        'for',
+        'or',
         'of the',
     ];
     const names = [
@@ -97,10 +105,10 @@ function fillLibrary(bookNumber = 5) {
         'Jennifer Compton',
     ]
     const starts = [
-        '', 
-        'The', 
-        'A', 
-        'My', 
+        '',
+        'The',
+        'A',
+        'My',
         'Her',
     ];
     for (let i = 0; i < bookNumber; i++) {
@@ -123,11 +131,7 @@ const authorInput = document.getElementById('author');
 const pagesInput = document.getElementById('pages');
 const readInput = document.getElementById('read');
 
-// Press 'add'
-document.querySelector("form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    addBookToLibrary();
-});
+document.querySelector("form").addEventListener("submit", e => e.preventDefault());
 
 function Book(title, author, pages, haveRead) {
     this.id = randomID();
@@ -136,7 +140,7 @@ function Book(title, author, pages, haveRead) {
     this.pages = pages;
     this.haveRead = haveRead;
 }
-Book.prototype.info = function() {
+Book.prototype.info = function () {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.haveRead ? "read" : "not read yet"
         }`;
 };
@@ -150,6 +154,9 @@ const createBook = () => {
     return newBook;
 }
 const addBookToLibrary = () => {
+    if (!titleInput.value || !authorInput.value || !pagesInput.value) {
+        return confirmAction('All fields are required.', hideAlert, false)
+    }
     library.push(createBook());
     updateLibrary();
     clearInputs();
@@ -188,7 +195,7 @@ function displayBooks() {
         newBook.appendChild(newBookTitle);
         newBookTitle.textContent = book.title;
         newBookTitle.classList.add('title');
-        
+
         // Author
         const newBookAuthor = document.createElement('td');
         newBook.appendChild(newBookAuthor);
@@ -200,7 +207,7 @@ function displayBooks() {
         newBook.appendChild(newBookPages);
         newBookPages.textContent = book.pages;
         newBookPages.classList.add('pages');
-        
+
         // Read status
         const newBookRead = document.createElement('td');
         newBook.appendChild(newBookRead);
@@ -290,14 +297,14 @@ function addEventListeners() {
             changeBook(e, deleteButton.dataset.id, 'delete');
         });
     })
-    
+
     const readStatusToggles = document.querySelectorAll('.toggle-read');
     readStatusToggles.forEach(toggle => {
         toggle.addEventListener('change', e => {
             changeBook(e, toggle.dataset.id, 'read');
         });
     })
-    
+
     const editBookButtons = document.querySelectorAll('.edit-book-button');
     editBookButtons.forEach(button => {
         button.addEventListener('click', e => {
@@ -320,63 +327,82 @@ function deleteLibrary() {
             confirmAction('Library deleted.', hideAlert, false);
         },
         true);
-    }
-    
+}
+
 
 // Change book
 function changeBook(e, bookId, change) {
+    // Find book in library
+    const book = library.find(a => a.id == bookId);
+
     const target = e.target;
-    e.stopPropagation();
-    const bookTitle = document.getElementById('table-inner')
-        .querySelector(`[data-id='${bookId}']`)
-        .querySelector('.title').textContent;
 
     // Edit book
-    function editBook(bookId) {
-        console.log(`will edit ${bookTitle}`);
+    function editBook(book) {
+        // Populate form with object data
+        titleInput.value = book.title;
+        authorInput.value = book.author;
+        pagesInput.value = book.pages;
+        readInput.checked = book.haveRead;
+
+        // On save, find row matching object id
+        const saveChanges = book => {
+            book.title = titleInput.value;
+            book.author = authorInput.value;
+            book.pages = pagesInput.value;
+            book.haveRead = readInput.checked;
+            hideModal(modal);
+            clearInputs();
+            updateLibrary();
+        }
+
+        // Remove event listeners
+        let oldAddButton = addBookButton;
+        addBookButton = addBookButton.cloneNode(true);
+        oldAddButton.replaceWith(addBookButton);
+
+        // Pull up form
+        showModal(modal);
+        
+        // Add book button is now save button
+        addBookButton.addEventListener('click', saveChanges.bind(addBookButton, book))
+        addBookButton.textContent = 'Save changes';
     }
 
-    // Pull up form
-    // Add book button now says save
-    // Populate form with object data
-    // On save, find row matching object id
-
     // Delete book
-    function deleteBook(bookId) {
-        confirmAction(`Are you sure you want to delete '${bookTitle}'? This cannot be undone.`,
+    function deleteBook(book) {
+        confirmAction(`Are you sure you want to delete '${book.title}'? This cannot be undone.`,
             () => {
-                library = library.filter(object => object.id != bookId);
+                library = library.filter(object => object != book);
                 updateLibrary();
                 hideAlert();
             },
             true)
     }
-    
+
     // Toggle Read status
-    function changeReadStatus(bookId) { 
-        // Find book in library
-        const book = library.find(a => a.id == bookId);
+    function changeReadStatus(book) {
         // Update read status to check status
-        book.haveRead = !!target.checked; // haveRead might be boolean or 0/1\
+        book.haveRead = !!target.checked; // haveRead might be boolean or 0/1
         // Update library
         updateLibrary();
     }
 
     switch (change) {
-        case 'edit': 
-            editBook(bookId);
+        case 'edit':
+            editBook(book);
             break;
         case 'delete':
-            deleteBook(bookId);
+            deleteBook(book);
             break;
         case 'read':
-            changeReadStatus(bookId);
+            changeReadStatus(book);
             break;
         default:
             console.log(`Book: ${bookTitle}`);
             break;
     }
-} 
+}
 
 // Edit library (select multiple to delete)
 // Duplicate book
