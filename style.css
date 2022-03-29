@@ -213,6 +213,10 @@ form a:active {
     color: white;
 }
 
+#alert-text {
+    white-space: pre-line;
+}
+
 /* TEST */
 .edit-library-modal {
     display: flex;
@@ -246,6 +250,9 @@ form a:active {
     gap:5px;
     align-items: center;
     position: relative;
+    white-space: nowrap;
+    flex-wrap: wrap;
+    cursor: pointer;
 }
 .by {
     opacity: .5;

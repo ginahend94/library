@@ -327,7 +327,7 @@ function deleteLibrary() {
     if (!library.length) return confirmAction('You have no books to delete.', hideAlert, false);
 
     //Show warning
-    confirmAction('Are you sure you want to delete your entire library? This cannot be undone.',
+    confirmAction('Are you sure you want to delete your entire library? \nThis cannot be undone.',
         () => {
             library = [];
             updateLibrary();
@@ -414,7 +414,7 @@ function changeBook(e, bookId, change) {
 
     // Delete book
     function deleteBook(book) {
-        confirmAction(`Are you sure you want to delete '${book.title}'? This cannot be undone.`,
+        confirmAction(`Are you sure you want to delete '${book.title}'? \nThis cannot be undone.`,
             () => {
                 library = library.filter(object => object != book);
                 updateLibrary();
@@ -450,3 +450,5 @@ function changeBook(e, bookId, change) {
 // Duplicate book
 // Dark mode
 // header, footer, sidebar
+// sorting function
+// batch add
