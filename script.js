@@ -357,7 +357,7 @@ function editLibrary() {
 
         library.forEach(book => {
             // Add checkboxes before titles
-            libraryTitlesContainer.innerHTML += `<li><input class="to-delete" type="checkbox" value='${book.id}'> ${book.title} by ${book.author}</li>`;
+            libraryTitlesContainer.innerHTML += `<li><label><input class="to-delete" type="checkbox" value='${book.id}'><span class="custom-check"></span> ${book.title} <span class="by">by</span> ${book.author}</label></li>`;
         })
 
         return libraryTitlesContainer;

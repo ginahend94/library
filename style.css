@@ -226,8 +226,10 @@ form a:active {
 }
 
 .book-list-container li {
-    padding: 10px;
     margin:2px;
+}
+.book-list-container label:hover .custom-check {
+    background-color: rgb(var(--light-coral-rgb));
 }
 
 .book-list-container li:nth-child(odd) {
@@ -235,4 +237,42 @@ form a:active {
 }
 .book-list-container li:nth-child(even) {
     background-color: rgba(var(--light-coral-rgb),.8);
+}
+.book-list-container label {
+    background-color: transparent;
+    padding: 10px;
+    color: inherit;
+    display: flex;
+    gap:5px;
+    align-items: center;
+    position: relative;
+}
+.by {
+    opacity: .5;
+}
+.to-delete {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+.custom-check {
+    border: solid 1px;
+    border-radius: 5px;
+    width: 2ch;
+    height: 2ch;
+    text-align: center;
+    opacity: 1;
+    transition: .1s;
+    background-color: rgba(var(--light-coral-rgb),.5);
+}
+.custom-check::before {
+    content: '✓';
+    opacity: 0;
+    transition: .07s;
+}
+
+.to-delete:checked ~ .custom-check:before {
+    content: '✓';
+    opacity: 1;
 }
