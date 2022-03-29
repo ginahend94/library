@@ -2,8 +2,8 @@
 const modal = document.querySelector('.modal');
 const modalBg = document.querySelector('.modal-bg');
 const form = document.querySelector('form');
-const formCancel = form.querySelector('a');
-let addBookButton = form.querySelector('#add-book-button');
+const formCancel = document.querySelector('.form-cancel');
+let addBookButton = document.querySelector('#add-book-button');
 
 const hideModal = modal => modal.style.display = 'none';
 const showModal = modal => modal.style.display = 'flex';
@@ -18,8 +18,10 @@ const newBookButton = document.querySelector('.new-book');
 const editLibraryButton = document.querySelector('.edit-library');
 const deleteLibraryButton = document.querySelector('.delete-library');
 const fillLibraryButton = document.querySelector('.dummy-books');
+const duplicateBookButton = document.querySelector('.duplicate-book');
 
 newBookButton.addEventListener('click', () => {
+    duplicateBookButton.style.display = 'none';
     // Remove event listeners
     let oldAddButton = addBookButton;
     addBookButton = addBookButton.cloneNode(true);
@@ -46,7 +48,7 @@ const authorInput = document.getElementById('author');
 const pagesInput = document.getElementById('pages');
 const readInput = document.getElementById('read');
 
-document.querySelector("form").addEventListener("submit", e => e.preventDefault());
+form.addEventListener("submit", e => e.preventDefault());
 
 function Book(title, author, pages, haveRead) {
     this.id = randomID();
@@ -83,11 +85,11 @@ function clearInputs() {
 }
 // book is added on-screen
 function displayBooks() {
-    
+
     // Clear table
     const tableInner = document.getElementById('table-inner');
     tableInner.innerHTML = '';
-    
+
     // Display a message if there are no books in library
     if (!library.length) {
         const emptyMessageRow = document.createElement('tr');
@@ -266,7 +268,7 @@ function fillLibrary(bookNumber = 5) {
             randomize(names), // Pick random author
             randomNum(), // Random number of pages
             !!randomNum(2)) // True/False read status
-        ); 
+        );
         updateLibrary();
     }
 }
@@ -336,7 +338,7 @@ function deleteLibrary() {
         },
         true);
 }
-    
+
 // Edit library (select multiple books to delete)
 const editLibraryModal = document.querySelector('.edit-library-modal');
 const editLibraryBg = document.querySelector('.edit-library-modal-bg');
@@ -357,7 +359,7 @@ function editLibrary() {
     disableDeleteButton();
 
     const libraryTitles = () => {
-        const libraryTitlesContainer =  document.createElement('ul');
+        const libraryTitlesContainer = document.createElement('ul');
         libraryTitlesContainer.classList.add('book-list-container');
         library.forEach(book => {
             // Add checkboxes before titles
@@ -418,12 +420,12 @@ function editLibrary() {
 }
 
 // Change book
+
 function changeBook(e, bookId, change) {
     // Find book in library
     const book = library.find(a => a.id == bookId);
-
     const target = e.target;
-
+    
     // Edit book
     function editBook(book) {
         // Populate form with object data
@@ -431,7 +433,7 @@ function changeBook(e, bookId, change) {
         authorInput.value = book.author;
         pagesInput.value = book.pages;
         readInput.checked = book.haveRead;
-
+        
         // On save, find row matching object id
         const saveChanges = book => {
             book.title = titleInput.value;
@@ -447,10 +449,23 @@ function changeBook(e, bookId, change) {
         let oldAddButton = addBookButton;
         addBookButton = addBookButton.cloneNode(true);
         oldAddButton.replaceWith(addBookButton);
+        
+        // Duplicate book
+        duplicateBookButton.addEventListener('click', duplicate);
+        duplicateBookButton.style.display = 'inline-block';
+        function duplicate() {
+            // create new book, params are book props
+            const dupe = new Book(book.title, book.author, book.pages, book.haveRead);
+            // update library
+            library.push(dupe);
+            updateLibrary();
+            // close modal
+            hideModal(modal);
+        }
 
         // Pull up form
         showModal(modal);
-        
+
         // Add book button is now save button
         addBookButton.addEventListener('click', saveChanges.bind(addBookButton, book))
         addBookButton.textContent = 'Save changes';
@@ -491,7 +506,6 @@ function changeBook(e, bookId, change) {
     }
 }
 
-// Duplicate book
 // Dark mode
 // header, footer, sidebar
 // sorting function

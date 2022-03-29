@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +11,9 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="wrapper">
         <h1>My Library</h1>
@@ -38,18 +40,23 @@
     </div>
     <div class="modal modal-outer">
         <div class="modal-bg bg"></div>
-        <form action="#" class="modal-container">
-            <label for="title">Title</label>
-            <input type="text" id="title" required>
-            <label for="author">Author</label>
-            <input type="text" id="author" required>
-            <label for="pages"># of Pages</label>
-            <input type="number" id="pages" min="1" required>
-            <label for="read">Read yet?</label>
-            <input type="checkbox" id="read">
-            <button type="button" id="add-book-button">Add new book</button>
-            <a href="javascript:void(0);">Cancel</a>
-        </form>
+        <div class="modal-container">
+            <form action="#">
+                <label for="title">Title</label>
+                <input type="text" id="title" required>
+                <label for="author">Author</label>
+                <input type="text" id="author" required>
+                <label for="pages"># of Pages</label>
+                <input type="number" id="pages" min="1" required>
+                <label for="read">Read yet?</label>
+                <input type="checkbox" id="read">
+            </form>
+            <div class="new-book-buttons-container">
+                <button class="duplicate-book">Duplicate book</button>
+                <button type="button" id="add-book-button">Add new book</button>
+                <button class="form-cancel">Cancel</a>
+            </div>
+        </div>
     </div>
     <div class="alert modal-outer">
         <div class="alert-bg bg"></div>
@@ -68,12 +75,6 @@
         <div class="edit-library-container modal-container">
             <p>Select the books you want to delete.</p>
             <div class="book-list">
-                <!-- test -->
-                <ul class="book-list-container">
-                    <li><label><input class="to-delete" type="checkbox" value='null'><span class="custom-check"></span> Book Title <span class="by">by</span> Author</label></li>
-                    <li><label><input class="to-delete" type="checkbox" value='null'><span class="custom-check"></span> Book Title <span class="by">by</span> Author</label></li>
-                    <li><label><input class="to-delete" type="checkbox" value='null'><span class="custom-check"></span> Book Title <span class="by">by</span> Author</label></li>
-                </ul>
             </div>
             <div class="edit-buttons-container">
                 <button class="delete-books">Delete Selected</button>
@@ -83,4 +84,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
