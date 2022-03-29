@@ -337,7 +337,7 @@ function deleteLibrary() {
         true);
 }
     
-// Edit library (select multiple to delete)
+// Edit library (select multiple books to delete)
 const editLibraryModal = document.querySelector('.edit-library-modal');
 const editLibraryBg = document.querySelector('.edit-library-modal-bg');
 const editLibraryBookList = document.querySelector('.book-list');
@@ -346,7 +346,6 @@ const editLibraryCancelButton = editLibraryModal.querySelector('.cancel');
 
 editLibraryBg.addEventListener('click', hideModal.bind(editLibraryBg, editLibraryModal));
 
-
 function editLibrary() {
     // Cancel if library is already empty
     if (!library.length) return confirmAction('You have no books to delete.', hideAlert, false);
@@ -354,28 +353,26 @@ function editLibrary() {
     let toBeDeleted = [];
     editLibraryBookList.innerHTML = '';
     showModal(editLibraryModal);
-    editLibraryDeleteButton.addEventListener('click', () => console.log('deleeeete'));
+    editLibraryDeleteButton.addEventListener('click', deleteSelected);
     disableDeleteButton();
 
     const libraryTitles = () => {
         const libraryTitlesContainer =  document.createElement('ul');
         libraryTitlesContainer.classList.add('book-list-container');
-
         library.forEach(book => {
             // Add checkboxes before titles
             libraryTitlesContainer.innerHTML += `<li><label><input class="to-delete" type="checkbox" value='${book.id}'><span class="custom-check"></span> ${book.title} <span class="by">by</span> ${book.author}</label></li>`;
         })
-
         return libraryTitlesContainer;
     }
-
     editLibraryBookList.appendChild(libraryTitles());
-    // Add info ('select books to delete') and cancel and delete with number of books ('delete 4')
+
     const editCheckboxes = document.querySelectorAll('.to-delete');
     editCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', addBookForDeletion.bind(checkbox, checkbox.value));
     })
 
+    // Inputs correspond to books in library
     function addBookForDeletion(bookId) {
         if (this.checked) {
             toBeDeleted.push(bookId);
@@ -383,22 +380,41 @@ function editLibrary() {
         else {
             toBeDeleted = toBeDeleted.filter(a => a !== bookId);
         }
-        console.log(toBeDeleted);
         // delete button is grayed out until at least one book is selected
         if (toBeDeleted.length) {
             editLibraryDeleteButton.disabled = false;
-            editLibraryDeleteButton.textContent = `Delete ${toBeDeleted.length}`;
+            editLibraryDeleteButton.textContent = `Delete ${toBeDeleted.length} Book${toBeDeleted.length > 1 ? 's' : ''}`;
         } else disableDeleteButton();
     }
-
 
     function disableDeleteButton() {
         editLibraryDeleteButton.textContent = 'No books selected';
         editLibraryDeleteButton.disabled = true;
     }
-    // Inputs correspond to books in library
-    // box pops up: delete the following: lists books
-    // 'yes' deletes books, cancel sends back
+    function deleteSelected() {
+        // box pops up: delete the following: lists books
+        const toBeDeletedTitles = () => {
+            let titles = [];
+            toBeDeleted.forEach(id => {
+                let book = library.find(book => book.id == id);
+                titles.push(`'${book.title}' by ${book.author}`);
+            })
+            return titles;
+        }
+        // 'yes' deletes books, cancel sends back
+        confirmAction(
+            `Are you sure you want to delete the following: \n\n${toBeDeletedTitles().join('\n')}\n\nThis cannot be undone.`,
+            () => {
+                toBeDeleted.forEach(selection => {
+                    library = library.filter(book => book.id != selection);
+                })
+                updateLibrary();
+                hideAlert();
+                hideModal(editLibraryModal);
+            },
+            true
+        )
+    }
 }
 
 // Change book

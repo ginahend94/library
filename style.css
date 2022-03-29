@@ -55,6 +55,8 @@ tr:nth-child(even) {
     border-radius: 5px;
     position: relative;
     gap:5px;
+    justify-content: center;
+    width: 10ch;
 }
 
 .toggle-read {
@@ -105,6 +107,7 @@ button:disabled {
     background-color: rgb(var(--disabled-rgb));
     border: solid 1px rgb(var(--disabled-rgb));
     color:#ebebeb;
+    cursor:default;
 }
 button:disabled:hover {
     opacity: 1;
@@ -199,6 +202,10 @@ form a:hover {
 }
 form a:active {
     opacity: 1;
+}
+
+.alert {
+    z-index: 9999999999999999999999999999999999;
 }
 
 .alert-container {
