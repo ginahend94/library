@@ -348,8 +348,14 @@ editLibraryBg.addEventListener('click', hideModal.bind(editLibraryBg, editLibrar
 
 
 function editLibrary() {
+    // Cancel if library is already empty
+    if (!library.length) return confirmAction('You have no books to delete.', hideAlert, false);
+
+    let toBeDeleted = [];
     editLibraryBookList.innerHTML = '';
     showModal(editLibraryModal);
+    editLibraryDeleteButton.addEventListener('click', () => console.log('deleeeete'));
+    disableDeleteButton();
 
     const libraryTitles = () => {
         const libraryTitlesContainer =  document.createElement('ul');
@@ -365,9 +371,31 @@ function editLibrary() {
 
     editLibraryBookList.appendChild(libraryTitles());
     // Add info ('select books to delete') and cancel and delete with number of books ('delete 4')
+    const editCheckboxes = document.querySelectorAll('.to-delete');
+    editCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', addBookForDeletion.bind(checkbox, checkbox.value));
+    })
+
+    function addBookForDeletion(bookId) {
+        if (this.checked) {
+            toBeDeleted.push(bookId);
+        }
+        else {
+            toBeDeleted = toBeDeleted.filter(a => a !== bookId);
+        }
+        console.log(toBeDeleted);
+        // delete button is grayed out until at least one book is selected
+        if (toBeDeleted.length) {
+            editLibraryDeleteButton.disabled = false;
+            editLibraryDeleteButton.textContent = `Delete ${toBeDeleted.length}`;
+        } else disableDeleteButton();
+    }
 
 
-    // delete button is grayed out until at least one book is selected
+    function disableDeleteButton() {
+        editLibraryDeleteButton.textContent = 'No books selected';
+        editLibraryDeleteButton.disabled = true;
+    }
     // Inputs correspond to books in library
     // box pops up: delete the following: lists books
     // 'yes' deletes books, cancel sends back

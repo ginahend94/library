@@ -1,6 +1,7 @@
 :root {
     --green-rgb: 4, 184, 158;
     --light-coral-rgb: 240, 128, 128;
+    --disabled-rgb:190, 153, 153;
 }
 
 * {
@@ -99,6 +100,14 @@ button:hover {
 }
 button:active {
     opacity:1;
+}
+button:disabled {
+    background-color: rgb(var(--disabled-rgb));
+    border: solid 1px rgb(var(--disabled-rgb));
+    color:#ebebeb;
+}
+button:disabled:hover {
+    opacity: 1;
 }
 
 .container button {
@@ -215,11 +224,6 @@ form a:active {
 
 #alert-text {
     white-space: pre-line;
-}
-
-/* TEST */
-.edit-library-modal {
-    display: flex;
 }
 
 .book-list-container {
