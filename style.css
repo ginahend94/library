@@ -86,7 +86,6 @@ tr:nth-child(even) {
     opacity: 1;
 }
 
-
 button {
     border:solid 1px rgb(var(--light-coral-rgb));
     padding:4px 10px;
@@ -113,8 +112,11 @@ button:disabled:hover {
     opacity: 1;
 }
 
-.container button {
-    margin:20px 0;
+.container {
+    margin-top: 20px;
+    display: flex;
+    gap:5px;
+    white-space: nowrap;
 }
 
 .bg {
@@ -149,11 +151,18 @@ button:disabled:hover {
     border-radius: 5px;
 }
 
+.new-book-buttons-container {
+    margin-top:10px;
+}
+.duplicate-book {
+    display: none;
+}
+
 form {
 	display: grid;
 	grid-template-columns: repeat(2, max-content);
     grid-auto-rows: max-content;
-	gap: 20px;
+	gap: 10px;
 }
 
 label {
@@ -183,25 +192,6 @@ a {
 }
 a:hover {
     text-decoration: underline;
-}
-
-form a {
-    width: fit-content;
-    border:solid 1px rgb(var(--light-coral-rgb));
-    border-radius: 5px;
-    padding:4px 10px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: .1s;
-}
-form a:hover {
-    text-decoration: none;
-    color:white;
-    background-color: rgb(var(--light-coral-rgb));
-    opacity: .7;
-}
-form a:active {
-    opacity: 1;
 }
 
 .alert {
