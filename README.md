@@ -1,2 +1,2 @@
-# odin-library
-Virtual library for The Odin Project
+library
+Virtual library app
